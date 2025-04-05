@@ -38,16 +38,16 @@ document.addEventListener('DOMContentLoaded', () => {
         tasks.forEach(task => {
             const li = document.createElement('li');
 
-            // Cambiar el estilo de la tarea cuando está completa
+           
             li.classList.toggle('completed', task.complete);
 
             li.innerHTML =
                 '<span>' + task.text + '</span>' +
                 '<div>' +
-                // Si la tarea está completa, solo mostrar "Modificada"
+               
                 (task.complete ?
                     '<button class="complete-btn" disabled>Modificada</button>' :
-                    // Si la tarea no está completa, mostrar los botones Editar, Eliminar y Completar
+                    
                     '<button class="edit-btn" onclick="editTask(' + task.id + ')">Editar</button>' +
                     '<button class="delete-btn" onclick="deleteTask(' + task.id + ')">Eliminar</button>' +
                     '<button class="complete-btn" onclick="toggleComplete(' + task.id + ')">Marcar Completa</button>'
@@ -76,7 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
         tasks = tasks.map(task =>
             task.id === id ? {
                 ...task,
-                complete: true  // Marca la tarea como completa
+                complete: true  
             } : task
         );
         renderTasks();
