@@ -35,23 +35,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function renderTasks() {
         taskList.innerHTML = '';
-        tasks.forEach(
-            task => {
-                console.log(task);
+        tasks.forEach(task => {
+            const li = document.createElement('li');
 
-                const li = document.createElement('li');
-                li.innerHTML =
-                    '<span>' + task.text + '</span>' +
-                    '<div>' +
-                    '<button class="edit-btn" onclick="editTask(' + task.id + ')">' +
-                    'Editar </button>' +
-                    '<button class="delete-btn" onclick="deleteTask(' + task.id + ')">' +
-                    'Eliminar </button>' +
-                    '</div>';
-                taskList.appendChild(li);
-            }
+            // Cambiar el estilo de la tarea cuando está completa
+            li.classList.toggle('completed', task.complete);
 
-        );
+            li.innerHTML =
+                '<span>' + task.text + '</span>' +
+                '<div>' +
+                // Si la tarea está completa, solo mostrar "Modificada"
+                (task.complete ?
+                    '<button class="complete-btn" disabled>Modificada</button>' :
+                    // Si la tarea no está completa, mostrar los botones Editar, Eliminar y Completar
+                    '<button class="edit-btn" onclick="editTask(' + task.id + ')">Editar</button>' +
+                    '<button class="delete-btn" onclick="deleteTask(' + task.id + ')">Eliminar</button>' +
+                    '<button class="complete-btn" onclick="toggleComplete(' + task.id + ')">Marcar Completa</button>'
+                ) +
+                '</div>';
+            taskList.appendChild(li);
+        });
     }
 
     window.deleteTask = function (id) {
@@ -60,7 +63,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     window.editTask = function (id) {
-        console.log(id);
         const et = tasks.find(t => t.id === id);
         if (et) {
             taskInput.value = et.text;
@@ -68,6 +70,16 @@ document.addEventListener('DOMContentLoaded', () => {
             isEditing = true;
             editingId = et.id;
         }
+    }
+
+    window.toggleComplete = function (id) {
+        tasks = tasks.map(task =>
+            task.id === id ? {
+                ...task,
+                complete: true  // Marca la tarea como completa
+            } : task
+        );
+        renderTasks();
     }
 
 });
